@@ -4,7 +4,13 @@ A Clojure library designed to ... well, that part is up to you.
 
 ## Usage
 
-FIXME
+$ lein repl
+
+user=> (use 'channels.core)
+user=> (test-performance 1000000)
+"Elapsed time: 8120.976477 msecs"  ;; message processing & persisting
+"Elapsed time: 42077.542532 msecs" ;; persisting
+
 
 ## License
 

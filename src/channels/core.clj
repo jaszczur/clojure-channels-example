@@ -70,5 +70,6 @@
        (send-response system (create-response (str i ".medx") (str "PLMN-1/MRBTS-" i) :success))))
     (time
      (while (< (count-tasks-sync system) n)
-       (Thread/sleep 1000)))))
+       (Thread/sleep 1000)))
+    (alia/execute session "TRUNCATE tasks;")))
 
