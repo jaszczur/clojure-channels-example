@@ -13,7 +13,7 @@
    :status status})
 
 (defn task-from-response [response]
-  {:operation_id (str (:operation-id response))
+  {:operation_id (:operation-id response)
    :status (name (:status response))
    :target (:fqdn response)})
 
@@ -37,7 +37,7 @@
   (let [ch  (create-response-handling-channel system)]
     (go (>! ch resp))))
 
-(defn count-tasks [system]
+(defn count-tasks-sync [system]
   (let [session (:session system)
         result (alia/execute session (q/select :tasks (q/columns (q/count*))))]
     (:count (first result))))
@@ -67,8 +67,8 @@
   (do
     (time
      (dotimes [i n]
-       (send-response system (create-response i "RNC-69" :success))))
+       (send-response system (create-response (str i ".medx") (str "PLMN-1/MRBTS-" i) :success))))
     (time
-     (while (< (count-tasks system) n)
-       (Thread/sleep 500)))))
+     (while (< (count-tasks-sync system) n)
+       (Thread/sleep 1000)))))
 
