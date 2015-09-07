@@ -17,11 +17,18 @@
    :status (name (:status response))
    :target (:fqdn response)})
 
+;(defn handle-response [system response]
+;  (let [new-task (task-from-response response)]
+;    (alia/execute-chan (:session system)
+;                  (q/insert :tasks
+;                            (q/values new-task)))))
+
 (defn handle-response [system response]
-  (let [new-task (task-from-response response)]
-    (alia/execute-chan (:session system)
-                  (q/insert :tasks
-                            (q/values new-task)))))
+  (->> response
+      (task-from-response)
+      (q/values)
+      (q/insert :tasks)
+      (alia/execute-chan (:session system))))
 
 (defn create-response-handling-channel [system]
   (let [ch (chan)]
